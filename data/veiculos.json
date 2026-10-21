@@ -1,0 +1,32 @@
+{
+  "observacao": "Fatores multiplicam as horas padrão e o preço das peças da tabela base (carro popular = 1). Estimativas iniciais — validar com mecânico.",
+  "tipos": [
+    { "id": "hatch", "nome": "Hatch / popular", "fatorHoras": 1, "fatorPecas": 1 },
+    { "id": "sedan", "nome": "Sedã", "fatorHoras": 1.1, "fatorPecas": 1.1 },
+    { "id": "suv", "nome": "SUV", "fatorHoras": 1.25, "fatorPecas": 1.3 },
+    { "id": "picape", "nome": "Picape", "fatorHoras": 1.35, "fatorPecas": 1.4 },
+    { "id": "van", "nome": "Van / utilitário", "fatorHoras": 1.3, "fatorPecas": 1.3 }
+  ],
+  "horasPorTipo": {
+    "embreagem": { "suv": 7, "picape": 8, "van": 7 },
+    "revisao-20mil": { "picape": 9 }
+  },
+  "marcas": [
+    { "id": "fiat", "nome": "Fiat", "fatorHoras": 1, "fatorPecas": 0.95 },
+    { "id": "volkswagen", "nome": "Volkswagen", "fatorHoras": 1, "fatorPecas": 1 },
+    { "id": "chevrolet", "nome": "Chevrolet", "fatorHoras": 1, "fatorPecas": 1 },
+    { "id": "ford", "nome": "Ford", "fatorHoras": 1, "fatorPecas": 1.05 },
+    { "id": "renault", "nome": "Renault", "fatorHoras": 1.05, "fatorPecas": 1.05 },
+    { "id": "hyundai", "nome": "Hyundai", "fatorHoras": 1, "fatorPecas": 1.1 },
+    { "id": "toyota", "nome": "Toyota", "fatorHoras": 1, "fatorPecas": 1.15 },
+    { "id": "honda", "nome": "Honda", "fatorHoras": 1, "fatorPecas": 1.15 },
+    { "id": "nissan", "nome": "Nissan", "fatorHoras": 1.05, "fatorPecas": 1.1 },
+    { "id": "jeep", "nome": "Jeep", "fatorHoras": 1.1, "fatorPecas": 1.25 },
+    { "id": "peugeot-citroen", "nome": "Peugeot / Citroën", "fatorHoras": 1.15, "fatorPecas": 1.2 },
+    { "id": "byd", "nome": "BYD", "fatorHoras": 1.1, "fatorPecas": 1.3 },
+    { "id": "bmw", "nome": "BMW", "fatorHoras": 1.4, "fatorPecas": 2 },
+    { "id": "mercedes", "nome": "Mercedes-Benz", "fatorHoras": 1.4, "fatorPecas": 2 },
+    { "id": "audi", "nome": "Audi", "fatorHoras": 1.4, "fatorPecas": 2 },
+    { "id": "outra", "nome": "Outra marca", "fatorHoras": 1, "fatorPecas": 1 }
+  ]
+}

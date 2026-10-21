@@ -1,0 +1,75 @@
+{
+  "versao": "2026-10",
+  "observacao": "Valores de referência para carro popular. Mão de obra = horasPadrao × valor-hora da oficina. Validar com mecânico antes do lançamento.",
+  "valorHoraReferencia": { "padrao": 80, "min": 50, "max": 250 },
+  "servicos": [
+    {
+      "id": "troca-oleo",
+      "nome": "Troca de óleo + filtro",
+      "categoria": "revisao",
+      "horasPadrao": 0.75,
+      "pecas": [
+        { "nome": "Óleo do motor (4 L)", "precoPadrao": 160, "precoMin": 120, "precoMax": 240 },
+        { "nome": "Filtro de óleo", "precoPadrao": 35, "precoMin": 25, "precoMax": 60 }
+      ]
+    },
+    {
+      "id": "revisao-simples",
+      "nome": "Revisão simples (óleo + filtro de ar)",
+      "categoria": "revisao",
+      "horasPadrao": 1.5,
+      "pecas": [
+        { "nome": "Óleo do motor (4 L)", "precoPadrao": 160, "precoMin": 120, "precoMax": 240 },
+        { "nome": "Filtro de óleo", "precoPadrao": 35, "precoMin": 25, "precoMax": 60 },
+        { "nome": "Filtro de ar", "precoPadrao": 45, "precoMin": 30, "precoMax": 80 }
+      ]
+    },
+    {
+      "id": "revisao-20mil",
+      "nome": "Revisão completa 20.000 km",
+      "categoria": "revisao",
+      "horasPadrao": 7,
+      "pecas": [
+        { "nome": "Óleo do motor (4 L)", "precoPadrao": 160, "precoMin": 120, "precoMax": 240 },
+        { "nome": "Filtro de óleo", "precoPadrao": 35, "precoMin": 25, "precoMax": 60 },
+        { "nome": "Filtro de ar", "precoPadrao": 45, "precoMin": 30, "precoMax": 80 },
+        { "nome": "Filtro de combustível", "precoPadrao": 40, "precoMin": 25, "precoMax": 80 },
+        { "nome": "Filtro de cabine", "precoPadrao": 40, "precoMin": 25, "precoMax": 70 }
+      ]
+    },
+    {
+      "id": "pastilha-dianteira",
+      "nome": "Pastilhas de freio dianteiras",
+      "categoria": "freios",
+      "horasPadrao": 1.5,
+      "pecas": [
+        { "nome": "Jogo de pastilhas dianteiras", "precoPadrao": 180, "precoMin": 120, "precoMax": 300 }
+      ]
+    },
+    {
+      "id": "alinhamento-balanceamento",
+      "nome": "Alinhamento + balanceamento",
+      "categoria": "suspensao",
+      "horasPadrao": 1.5,
+      "pecas": [
+        { "nome": "Pesos de balanceamento", "precoPadrao": 20, "precoMin": 10, "precoMax": 40 }
+      ]
+    },
+    {
+      "id": "embreagem",
+      "nome": "Troca de embreagem",
+      "categoria": "transmissao",
+      "horasPadrao": 5,
+      "pecas": [
+        { "nome": "Kit de embreagem", "precoPadrao": 650, "precoMin": 450, "precoMax": 1000 }
+      ]
+    },
+    {
+      "id": "diagnostico-scanner",
+      "nome": "Diagnóstico com scanner",
+      "categoria": "eletrica",
+      "horasPadrao": 1,
+      "pecas": []
+    }
+  ]
+}

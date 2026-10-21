@@ -1,0 +1,17 @@
+{
+  "observacao": "Fator aplicado só à mão de obra (peças têm preço mais uniforme no país). Estimativas iniciais — ajustar com dados reais das oficinas.",
+  "padrao": { "capital": 1.0, "interior": 0.9 },
+  "porUf": {
+    "SP": { "capital": 1.25, "interior": 1.0 },
+    "RJ": { "capital": 1.2, "interior": 0.95 },
+    "DF": { "capital": 1.2, "interior": 1.2 },
+    "MG": { "capital": 1.1, "interior": 0.9 },
+    "PR": { "capital": 1.1, "interior": 0.95 },
+    "SC": { "capital": 1.1, "interior": 1.0 },
+    "RS": { "capital": 1.1, "interior": 0.95 },
+    "BA": { "capital": 1.0, "interior": 0.85 },
+    "PE": { "capital": 1.0, "interior": 0.85 },
+    "CE": { "capital": 0.95, "interior": 0.8 },
+    "GO": { "capital": 1.05, "interior": 0.9 }
+  }
+}
