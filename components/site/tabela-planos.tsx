@@ -77,7 +77,7 @@ export default function TabelaPlanos() {
                     ? `${formatarPreco(p.precoMensal * MESES_PAGOS_NO_ANO)} cobrados uma vez por ano`
                     : p.precoMensal > 0
                       ? "Cobrado todo mês"
-                      : "Para sempre"}
+                      : "Sem cartão de crédito"}
                 </p>
               </div>
 

@@ -119,7 +119,7 @@ export default function Landing() {
           <article className="flex flex-col gap-3 rounded-2xl bg-accent p-6 text-accent-foreground">
             <ListChecks size={32} weight="duotone" />
             <h3 className="text-xl font-semibold tracking-tight">Cada peça com seu preço</h3>
-            <p className="opacity-80">
+            <p>
               O cliente vê peça por peça e a mão de obra. Menos discussão, mais
               orçamento aprovado.
             </p>
@@ -175,7 +175,7 @@ export default function Landing() {
             {
               pergunta: "Posso cancelar quando quiser?",
               resposta:
-                "Pode. Sem multa e sem fidelidade. Se voltar para o plano grátis, seus orçamentos continuam lá.",
+                "Pode. Sem multa e sem fidelidade. Se cancelar, seus orçamentos continuam salvos para consulta.",
             },
           ]}
         />

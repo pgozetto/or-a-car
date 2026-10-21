@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Perguntas from "@/components/site/perguntas";
 import TabelaPlanos from "@/components/site/tabela-planos";
+import { LIMITE_GRATIS } from "@/lib/planos";
 
 export const metadata: Metadata = {
   title: "Planos | OrçaCar",
@@ -30,9 +31,9 @@ export default function PaginaPlanos() {
                 "Pix ou cartão de crédito. No cartão a cobrança é automática todo mês (ou todo ano, no plano anual).",
             },
             {
-              pergunta: "O que acontece se eu passar de 10 orçamentos no plano grátis?",
+              pergunta: `O que acontece depois dos ${LIMITE_GRATIS} orçamentos grátis?`,
               resposta:
-                "Você continua vendo seus orçamentos, mas só cria novos no mês seguinte ou ao assinar um plano.",
+                "Seus orçamentos continuam salvos e você pode ver e reenviar todos. Para criar novos, é só assinar um plano. O plano grátis não renova todo mês.",
             },
             {
               pergunta: "Posso trocar de plano depois?",

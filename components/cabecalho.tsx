@@ -9,6 +9,7 @@ const LINKS = [
   { href: "/painel", rotulo: "Novo" },
   { href: "/painel/orcamentos", rotulo: "Orçamentos" },
   { href: "/painel/oficina", rotulo: "Oficina" },
+  { href: "/painel/tutoriais", rotulo: "Tutoriais" },
 ];
 
 export default function Cabecalho() {
@@ -20,7 +21,7 @@ export default function Cabecalho() {
         <Logo href="/painel" />
         <ThemeToggle />
       </div>
-      <nav className="grid grid-cols-3 gap-1 rounded-2xl border border-border bg-surface p-1">
+      <nav className="grid grid-cols-4 gap-1 rounded-2xl border border-border bg-surface p-1">
         {LINKS.map((l) => {
           const ativo =
             l.href === "/painel" ? caminho === "/painel" : caminho.startsWith(l.href);
@@ -29,7 +30,7 @@ export default function Cabecalho() {
               key={l.href}
               href={l.href}
               aria-current={ativo ? "page" : undefined}
-              className={`flex h-11 items-center justify-center rounded-xl text-sm font-medium transition-colors ${
+              className={`flex h-11 items-center justify-center rounded-xl text-[13px] font-medium sm:text-sm transition-colors ${
                 ativo
                   ? "bg-accent text-accent-foreground"
                   : "text-muted hover:text-foreground"

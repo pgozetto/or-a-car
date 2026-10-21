@@ -35,6 +35,9 @@ export default function LayoutSite({ children }: { children: React.ReactNode }) 
             <Link href="/planos" className="hover:text-foreground">
               Planos
             </Link>
+            <Link href="/painel/tutoriais" className="hover:text-foreground">
+              Tutoriais
+            </Link>
             <Link href="/painel" className="hover:text-foreground">
               Entrar
             </Link>

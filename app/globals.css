@@ -7,7 +7,7 @@
   --surface-2: #17223a;
   --border: #22304d;
   --foreground: #f8fafc;
-  --muted: #94a3b8;
+  --muted: #cbd5e1;
   --accent: #38bdf8;
   --accent-hover: #7dd3fc;
   --accent-foreground: #0b1220;
@@ -21,7 +21,7 @@
   --surface-2: #eaf1f9;
   --border: #d6e0ec;
   --foreground: #0b1220;
-  --muted: #526077;
+  --muted: #334155;
   --accent: #0284c7;
   --accent-hover: #0ea5e9;
   --accent-foreground: #ffffff;
@@ -61,7 +61,7 @@ body {
     --surface: #ffffff;
     --border: #d6e0ec;
     --foreground: #0b1220;
-    --muted: #526077;
+    --muted: #334155;
   }
 }
 

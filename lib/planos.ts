@@ -10,14 +10,17 @@ export type Plano = {
 // Plano anual: paga 10 meses e leva 12.
 export const MESES_PAGOS_NO_ANO = 10;
 
+// Total de orçamentos do plano grátis. Não renova: é só para experimentar.
+export const LIMITE_GRATIS = 3;
+
 export const PLANOS: Plano[] = [
   {
     id: "gratis",
     nome: "Grátis",
     precoMensal: 0,
-    resumo: "Para testar com calma.",
+    resumo: "Para experimentar antes de assinar.",
     recursos: [
-      "10 orçamentos por mês",
+      `${LIMITE_GRATIS} orçamentos para testar (não renova)`,
       "Envio pelo WhatsApp",
       "Preço por tipo e marca do carro",
     ],
