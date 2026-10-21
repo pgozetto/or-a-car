@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import FormOficina from "@/components/form-oficina";
+import MeusServicos from "@/components/meus-servicos";
+import { VALOR_HORA_REFERENCIA } from "@/lib/orcamento";
 import { useOficina } from "@/lib/use-oficina";
 
 export default function PaginaOficina() {
@@ -26,6 +28,8 @@ export default function PaginaOficina() {
           Dados salvos.
         </p>
       )}
+      <hr className="border-border" />
+      <MeusServicos valorHora={oficina?.valorHora ?? VALOR_HORA_REFERENCIA.padrao} />
     </>
   );
 }

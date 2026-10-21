@@ -15,6 +15,19 @@ export type Servico = {
   categoria: string;
   horasPadrao: number;
   pecas: Peca[];
+  // Serviço criado pela oficina: horas e preços valem para qualquer carro.
+  fixo?: boolean;
+};
+
+export const CATEGORIAS: Record<string, string> = {
+  revisao: "Revisão",
+  freios: "Freios",
+  suspensao: "Suspensão",
+  motor: "Motor",
+  transmissao: "Transmissão",
+  eletrica: "Elétrica e ar",
+  carroceria: "Vidros e retrovisores",
+  oficina: "Serviços da sua oficina",
 };
 
 export type FatorVeiculo = {
@@ -95,6 +108,7 @@ function fatoresVeiculo(veiculo?: Veiculo) {
 
 // Horas arredondadas para o quarto de hora mais próximo, como a oficina cobra.
 export function horasSugeridas(servico: Servico, veiculo?: Veiculo): number {
+  if (servico.fixo) return servico.horasPadrao;
   const { tipo, marca } = fatoresVeiculo(veiculo);
   const especifica = HORAS_POR_TIPO[servico.id]?.[tipo.id];
   const base = especifica ?? servico.horasPadrao * tipo.fatorHoras;
@@ -123,7 +137,8 @@ export function calcularOrcamento(
     const pecas = servico.pecas.map((p) => ({
       nome: p.nome,
       preco: centavos(
-        item.precosPecas?.[p.nome] ?? precoSugeridoPeca(p, entrada.veiculo),
+        item.precosPecas?.[p.nome] ??
+          (servico.fixo ? p.precoPadrao : precoSugeridoPeca(p, entrada.veiculo)),
       ),
     }));
     const totalPecas = pecas.reduce((soma, p) => soma + p.preco, 0);

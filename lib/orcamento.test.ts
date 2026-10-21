@@ -110,6 +110,27 @@ describe("veículo", () => {
     expect(r.total).toBe(255);
   });
 
+  it("serviço da oficina (fixo) ignora tipo e marca do carro", () => {
+    const meu: Servico = {
+      id: "meu-polimento",
+      nome: "Polimento",
+      categoria: "oficina",
+      horasPadrao: 3,
+      fixo: true,
+      pecas: [{ nome: "Massa de polir", precoPadrao: 60, precoMin: 60, precoMax: 60 }],
+    };
+    const r = calcularOrcamento(
+      {
+        itens: [{ servicoId: "meu-polimento" }],
+        valorHora: 80,
+        veiculo: { tipoId: "picape", marcaId: "bmw" },
+      },
+      [meu],
+    );
+    expect(r.linhas[0].horas).toBe(3);
+    expect(r.total).toBe(300);
+  });
+
   it("preço editado da peça vence o sugerido", () => {
     const r = calcularOrcamento({
       itens: [{ servicoId: "pastilha-dianteira", precosPecas: { "Jogo de pastilhas dianteiras": 150 } }],

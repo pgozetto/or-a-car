@@ -70,6 +70,116 @@
       "categoria": "eletrica",
       "horasPadrao": 1,
       "pecas": []
+    },
+    {
+      "id": "pastilha-traseira",
+      "nome": "Pastilhas de freio traseiras",
+      "categoria": "freios",
+      "horasPadrao": 1.5,
+      "pecas": [
+        { "nome": "Jogo de pastilhas traseiras", "precoPadrao": 160, "precoMin": 110, "precoMax": 260 }
+      ]
+    },
+    {
+      "id": "discos-freio",
+      "nome": "Discos + pastilhas dianteiras",
+      "categoria": "freios",
+      "horasPadrao": 2,
+      "pecas": [
+        { "nome": "Par de discos de freio", "precoPadrao": 380, "precoMin": 250, "precoMax": 600 },
+        { "nome": "Jogo de pastilhas dianteiras", "precoPadrao": 180, "precoMin": 120, "precoMax": 300 }
+      ]
+    },
+    {
+      "id": "fluido-freio",
+      "nome": "Troca do fluido de freio",
+      "categoria": "freios",
+      "horasPadrao": 1,
+      "pecas": [
+        { "nome": "Fluido de freio DOT 4 (500 ml)", "precoPadrao": 45, "precoMin": 30, "precoMax": 70 }
+      ]
+    },
+    {
+      "id": "amortecedores",
+      "nome": "Amortecedores dianteiros",
+      "categoria": "suspensao",
+      "horasPadrao": 2.5,
+      "pecas": [
+        { "nome": "Par de amortecedores", "precoPadrao": 520, "precoMin": 350, "precoMax": 900 },
+        { "nome": "Kit batente e coifa", "precoPadrao": 120, "precoMin": 70, "precoMax": 200 }
+      ]
+    },
+    {
+      "id": "correia-dentada",
+      "nome": "Troca de correia dentada",
+      "categoria": "motor",
+      "horasPadrao": 3,
+      "pecas": [
+        { "nome": "Kit correia + tensor", "precoPadrao": 350, "precoMin": 220, "precoMax": 600 }
+      ]
+    },
+    {
+      "id": "velas",
+      "nome": "Troca de velas",
+      "categoria": "motor",
+      "horasPadrao": 0.75,
+      "pecas": [
+        { "nome": "Jogo de velas (4)", "precoPadrao": 120, "precoMin": 70, "precoMax": 250 }
+      ]
+    },
+    {
+      "id": "bateria",
+      "nome": "Troca de bateria",
+      "categoria": "eletrica",
+      "horasPadrao": 0.5,
+      "pecas": [
+        { "nome": "Bateria 60 Ah", "precoPadrao": 480, "precoMin": 380, "precoMax": 700 }
+      ]
+    },
+    {
+      "id": "ar-condicionado",
+      "nome": "Higienização + carga do ar-condicionado",
+      "categoria": "eletrica",
+      "horasPadrao": 1.5,
+      "pecas": [
+        { "nome": "Gás e higienizador", "precoPadrao": 150, "precoMin": 100, "precoMax": 250 }
+      ]
+    },
+    {
+      "id": "reparar-retrovisor",
+      "nome": "Reparar retrovisor",
+      "categoria": "carroceria",
+      "horasPadrao": 1,
+      "pecas": [
+        { "nome": "Espelho ou capa do retrovisor", "precoPadrao": 120, "precoMin": 60, "precoMax": 250 }
+      ]
+    },
+    {
+      "id": "trocar-retrovisor",
+      "nome": "Trocar retrovisor completo",
+      "categoria": "carroceria",
+      "horasPadrao": 1,
+      "pecas": [
+        { "nome": "Retrovisor completo", "precoPadrao": 380, "precoMin": 220, "precoMax": 700 }
+      ]
+    },
+    {
+      "id": "maquina-vidro",
+      "nome": "Reparar máquina de vidro",
+      "categoria": "carroceria",
+      "horasPadrao": 1.5,
+      "pecas": [
+        { "nome": "Máquina de vidro", "precoPadrao": 220, "precoMin": 150, "precoMax": 400 }
+      ]
+    },
+    {
+      "id": "trocar-vidro",
+      "nome": "Trocar vidro lateral",
+      "categoria": "carroceria",
+      "horasPadrao": 1.5,
+      "pecas": [
+        { "nome": "Vidro lateral", "precoPadrao": 280, "precoMin": 180, "precoMax": 450 }
+      ]
     }
   ]
 }

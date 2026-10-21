@@ -9,12 +9,9 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import PreviaOrcamento from "@/components/site/previa-orcamento";
 import Perguntas from "@/components/site/perguntas";
-import { estiloBotaoPrincipal } from "@/components/campos";
+import { estiloBotaoPrincipal, estiloBotaoSecundario } from "@/components/campos";
 import { PLANOS, formatarPreco } from "@/lib/planos";
 import { TIPOS_VEICULO } from "@/lib/orcamento";
-
-const estiloBotaoSecundario =
-  "flex h-14 shrink-0 items-center justify-center whitespace-nowrap rounded-2xl border border-border px-6 font-semibold transition-[background-color,transform] duration-150 ease-out hover:bg-surface-2 active:scale-[0.97]";
 
 const PASSOS = [
   {

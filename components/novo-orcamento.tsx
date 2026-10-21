@@ -1,8 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Plus } from "@phosphor-icons/react";
 import {
+  CATEGORIAS,
   MARCAS,
   SERVICOS,
   TIPOS_VEICULO,
@@ -11,9 +14,11 @@ import {
   formatarReais,
   textoWhatsApp,
   type ItemOrcamento,
+  type Servico,
 } from "@/lib/orcamento";
 import {
   linkWhatsApp,
+  listarServicosDaOficina,
   salvarOrcamento,
   type Oficina,
 } from "@/lib/armazenamento";
@@ -32,6 +37,21 @@ export default function NovoOrcamento({ oficina }: { oficina: Oficina }) {
   const [descontoPct, setDescontoPct] = useState(0);
   const [cliente, setCliente] = useState("");
   const [telefone, setTelefone] = useState("");
+  const [servicosDaOficina, setServicosDaOficina] = useState<Servico[]>([]);
+  useEffect(() => setServicosDaOficina(listarServicosDaOficina()), []);
+
+  const todosServicos = useMemo(
+    () => [...servicosDaOficina, ...SERVICOS],
+    [servicosDaOficina],
+  );
+  // Serviços da oficina primeiro, depois a tabela base na ordem das categorias.
+  const grupos = Object.keys(CATEGORIAS)
+    .sort((a, b) => (a === "oficina" ? -1 : b === "oficina" ? 1 : 0))
+    .map((categoria) => ({
+      categoria,
+      servicos: todosServicos.filter((s) => s.categoria === categoria),
+    }))
+    .filter((g) => g.servicos.length > 0);
 
   const veiculo = { tipoId, marcaId };
   const itens = selecionados.map((servicoId) => ({
@@ -41,15 +61,18 @@ export default function NovoOrcamento({ oficina }: { oficina: Oficina }) {
 
   const resultado = useMemo(
     () =>
-      calcularOrcamento({
-        itens,
-        valorHora: oficina.valorHora,
-        veiculo,
-        descontoPct,
-      }),
+      calcularOrcamento(
+        {
+          itens,
+          valorHora: oficina.valorHora,
+          veiculo,
+          descontoPct,
+        },
+        todosServicos,
+      ),
     // itens e veiculo são derivados destes estados.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [selecionados, ajustes, tipoId, marcaId, descontoPct, oficina.valorHora],
+    [selecionados, ajustes, tipoId, marcaId, descontoPct, oficina.valorHora, todosServicos],
   );
 
   // Mudou o carro, os valores sugeridos mudam: descarta ajustes antigos.
@@ -84,6 +107,9 @@ export default function NovoOrcamento({ oficina }: { oficina: Oficina }) {
       valorHora: oficina.valorHora,
       descontoPct,
       total: resultado.total,
+      servicosDaOficina: servicosDaOficina.filter((s) =>
+        selecionados.includes(s.id),
+      ),
     });
     const texto = textoWhatsApp(
       oficina.nome,
@@ -106,7 +132,7 @@ export default function NovoOrcamento({ oficina }: { oficina: Oficina }) {
               onClick={() => trocarVeiculo(t.id, marcaId)}
               className={`h-12 rounded-full border px-4 text-sm font-medium transition-colors ${
                 tipoId === t.id
-                  ? "border-accent bg-accent text-accent-foreground"
+                  ? "border-accent bg-accent text-accent-foreground sombra-botao"
                   : "border-border bg-surface text-muted hover:text-foreground"
               }`}
             >
@@ -139,27 +165,41 @@ export default function NovoOrcamento({ oficina }: { oficina: Oficina }) {
       </Etapa>
 
       <Etapa numero={2} titulo="Quais serviços?">
-        <ul className="grid gap-3 sm:grid-cols-2">
-          {SERVICOS.map((s) => {
-            const ativo = selecionados.includes(s.id);
-            return (
-              <li key={s.id}>
-                <button
-                  type="button"
-                  aria-pressed={ativo}
-                  onClick={() => alternar(s.id)}
-                  className={`flex min-h-16 w-full items-center rounded-2xl border px-4 py-3 text-left font-medium transition-[background-color,border-color,transform] duration-150 ease-out active:scale-[0.97] ${
-                    ativo
-                      ? "border-accent bg-accent/15 ring-1 ring-accent"
-                      : "border-border bg-surface hover:bg-surface-2"
-                  }`}
-                >
-                  {s.nome}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        {grupos.map((g) => (
+          <div key={g.categoria} className="flex flex-col gap-2">
+            <h3 className="text-sm font-semibold text-muted">
+              {CATEGORIAS[g.categoria]}
+            </h3>
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {g.servicos.map((s) => {
+                const ativo = selecionados.includes(s.id);
+                return (
+                  <li key={s.id}>
+                    <button
+                      type="button"
+                      aria-pressed={ativo}
+                      onClick={() => alternar(s.id)}
+                      className={`flex min-h-16 w-full items-center rounded-2xl border px-4 py-3 text-left font-medium sombra-botao-leve transition-[background-color,border-color,transform] duration-150 ease-out active:scale-[0.97] ${
+                        ativo
+                          ? "border-accent bg-accent/15 ring-1 ring-accent"
+                          : "border-border bg-surface hover:bg-surface-2"
+                      }`}
+                    >
+                      {s.nome}
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+        <Link
+          href="/painel/oficina#servicos"
+          className="flex h-12 items-center justify-center gap-2 rounded-2xl border border-dashed border-border font-medium text-accent transition-colors hover:bg-surface-2"
+        >
+          <Plus size={20} weight="bold" />
+          Adicionar um serviço da sua oficina
+        </Link>
       </Etapa>
 
       {resultado.linhas.length > 0 && (

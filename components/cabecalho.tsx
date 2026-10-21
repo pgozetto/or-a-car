@@ -32,7 +32,7 @@ export default function Cabecalho() {
               aria-current={ativo ? "page" : undefined}
               className={`flex h-11 items-center justify-center rounded-xl text-[13px] font-medium sm:text-sm transition-colors ${
                 ativo
-                  ? "bg-accent text-accent-foreground"
+                  ? "bg-accent text-accent-foreground sombra-botao"
                   : "text-muted hover:text-foreground"
               }`}
             >

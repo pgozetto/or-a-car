@@ -1,32 +1,55 @@
 @import "tailwindcss";
 
-/* Tema escuro é o padrão; o claro só entra com data-theme="light". */
+/* O site sempre abre no tema claro; o escuro só entra com data-theme="dark". */
 :root {
+  --background: #ffffff;
+  --surface: #f5f8fc;
+  --surface-2: #eaf1f9;
+  --border: #c9d6e6;
+  --foreground: #0b1220;
+  --muted: #334155;
+  --accent: #0277bd;
+  --accent-hover: #0288d1;
+  --accent-foreground: #ffffff;
+  --danger: #dc2626;
+  --sombra-titulo: 0 1px 1px rgb(11 18 32 / 0.12), 0 2px 8px rgb(2 119 189 / 0.12);
+  --sombra-texto-botao: 0 1px 1px rgb(11 18 32 / 0.35);
+  --sombra-botao: 0 1px 2px rgb(11 18 32 / 0.12), 0 6px 16px -4px rgb(2 119 189 / 0.45);
+  --sombra-botao-leve: 0 1px 2px rgb(11 18 32 / 0.08), 0 4px 12px -6px rgb(11 18 32 / 0.18);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
   --background: #0b1220;
   --surface: #111a2e;
   --surface-2: #17223a;
-  --border: #22304d;
+  --border: #2a3a5c;
   --foreground: #f8fafc;
   --muted: #cbd5e1;
   --accent: #38bdf8;
   --accent-hover: #7dd3fc;
   --accent-foreground: #0b1220;
   --danger: #f87171;
+  --sombra-titulo: 0 2px 6px rgb(0 0 0 / 0.55);
+  --sombra-texto-botao: none;
+  --sombra-botao: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 18px -4px rgb(56 189 248 / 0.45);
+  --sombra-botao-leve: 0 1px 2px rgb(0 0 0 / 0.35), 0 6px 14px -6px rgb(0 0 0 / 0.6);
   color-scheme: dark;
 }
 
-:root[data-theme="light"] {
-  --background: #ffffff;
-  --surface: #f5f8fc;
-  --surface-2: #eaf1f9;
-  --border: #d6e0ec;
-  --foreground: #0b1220;
-  --muted: #334155;
-  --accent: #0284c7;
-  --accent-hover: #0ea5e9;
-  --accent-foreground: #ffffff;
-  --danger: #dc2626;
-  color-scheme: light;
+@utility sombra-botao {
+  box-shadow: var(--sombra-botao);
+}
+
+@utility sombra-botao-leve {
+  box-shadow: var(--sombra-botao-leve);
+}
+
+/* Sombra suave nos títulos para destacar do fundo. */
+h1,
+h2,
+h3 {
+  text-shadow: var(--sombra-titulo);
 }
 
 @theme inline {
@@ -56,12 +79,16 @@ body {
 
 /* Orçamento impresso sempre em papel branco, independente do tema. */
 @media print {
-  :root {
+  :root,
+  :root[data-theme="dark"] {
     --background: #ffffff;
     --surface: #ffffff;
     --border: #d6e0ec;
     --foreground: #0b1220;
     --muted: #334155;
+    --sombra-titulo: none;
+    --sombra-botao: none;
+    --sombra-botao-leve: none;
   }
 }
 

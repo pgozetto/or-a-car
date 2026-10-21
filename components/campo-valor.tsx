@@ -23,7 +23,7 @@ export default function CampoValor({
 
   return (
     <label className="flex items-center justify-between gap-3 text-sm text-muted">
-      <span>{rotulo}</span>
+      <span className={rotulo ? undefined : "sr-only"}>{rotulo || "Preço"}</span>
       <span className="flex h-12 w-36 shrink-0 items-center gap-1 rounded-xl border border-border bg-background px-3 transition-colors focus-within:border-accent">
         {prefixo && <span>{prefixo}</span>}
         <input

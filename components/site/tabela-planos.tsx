@@ -3,16 +3,13 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Check } from "@phosphor-icons/react";
-import { estiloBotaoPrincipal } from "@/components/campos";
+import { estiloBotaoPrincipal, estiloBotaoSecundario } from "@/components/campos";
 import {
   MESES_PAGOS_NO_ANO,
   PLANOS,
   formatarPreco,
   precoPorMes,
 } from "@/lib/planos";
-
-const estiloBotaoSecundario =
-  "flex h-14 items-center justify-center rounded-2xl border border-border font-semibold transition-[background-color,transform] duration-150 ease-out hover:bg-surface-2 active:scale-[0.97]";
 
 export default function TabelaPlanos() {
   const [anual, setAnual] = useState(false);
@@ -32,7 +29,7 @@ export default function TabelaPlanos() {
             onClick={() => setAnual(opcao)}
             className={`h-11 rounded-xl text-sm font-medium transition-colors ${
               anual === opcao
-                ? "bg-accent text-accent-foreground"
+                ? "bg-accent text-accent-foreground sombra-botao"
                 : "text-muted hover:text-foreground"
             }`}
           >

@@ -7,6 +7,7 @@ import {
   FilePdf,
   Gear,
   MoonStars,
+  PlusCircle,
   Receipt,
   WhatsappLogo,
 } from "@phosphor-icons/react/dist/ssr";
@@ -46,6 +47,20 @@ const TUTORIAIS: Tutorial[] = [
     ],
     dica: "O tipo e a marca mudam o preço: um SUV leva mais tempo de serviço e algumas marcas têm peças mais caras.",
     acao: { rotulo: "Fazer um orçamento", href: "/painel" },
+  },
+  {
+    titulo: "Adicionar um serviço da sua oficina",
+    icone: PlusCircle,
+    passos: [
+      "Toque na aba Oficina e desça até Meus serviços.",
+      "Em Nome do serviço, escreva o nome. Por exemplo: Polimento de farol.",
+      "Em Tempo de serviço, digite quantas horas o serviço leva. O valor da mão de obra aparece ao lado, usando o preço da sua hora.",
+      "Se o serviço usa peças, toque em Adicionar peça, escreva o nome da peça e o preço que você cobra. Repita para cada peça.",
+      "Confira o Preço deste serviço e toque em Adicionar serviço.",
+      "Pronto: o serviço aparece no Novo orçamento, no grupo Serviços da sua oficina.",
+    ],
+    dica: "Os serviços que você cria têm preço fixo: o tempo e as peças não mudam com o tipo ou a marca do carro. Para mudar, toque no lápis ao lado do serviço. Para apagar, toque na lixeira.",
+    acao: { rotulo: "Adicionar um serviço", href: "/painel/oficina#servicos" },
   },
   {
     titulo: "Mudar o preço de uma peça ou as horas",
@@ -99,13 +114,13 @@ const TUTORIAIS: Tutorial[] = [
     ],
   },
   {
-    titulo: "Trocar entre modo escuro e modo claro",
+    titulo: "Trocar entre modo claro e modo escuro",
     icone: MoonStars,
     passos: [
-      "Toque no botão Modo claro, no canto de cima da tela.",
-      "Para voltar, toque em Modo escuro.",
+      "Toque no botão Modo escuro, no canto de cima da tela.",
+      "Para voltar, toque em Modo claro.",
     ],
-    dica: "No sol forte, o modo claro costuma ser mais fácil de ler.",
+    dica: "O OrçaCar sempre abre no modo claro, que é mais fácil de ler no sol.",
   },
 ];
 

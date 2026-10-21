@@ -1,31 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
+// O site sempre abre no modo claro; a troca vale só até recarregar a página.
 export default function ThemeToggle() {
-  const [claro, setClaro] = useState(false);
-
-  useEffect(() => {
-    setClaro(document.documentElement.dataset.theme === "light");
-  }, []);
+  const [escuro, setEscuro] = useState(false);
 
   function alternar() {
-    const proximo = !claro;
-    setClaro(proximo);
-    if (proximo) document.documentElement.dataset.theme = "light";
+    const proximo = !escuro;
+    setEscuro(proximo);
+    if (proximo) document.documentElement.dataset.theme = "dark";
     else delete document.documentElement.dataset.theme;
-    try {
-      localStorage.setItem("tema", proximo ? "light" : "dark");
-    } catch {}
   }
 
   return (
     <button
       type="button"
       onClick={alternar}
-      className="h-12 rounded-full border border-border px-4 text-sm text-muted transition-colors hover:text-foreground"
+      className="h-12 rounded-full border border-border bg-surface px-4 text-sm font-medium text-foreground sombra-botao-leve transition-colors hover:bg-surface-2"
     >
-      {claro ? "Modo escuro" : "Modo claro"}
+      {escuro ? "Modo claro" : "Modo escuro"}
     </button>
   );
 }

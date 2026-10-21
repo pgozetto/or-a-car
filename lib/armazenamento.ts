@@ -1,6 +1,6 @@
 // Guarda os dados no próprio navegador enquanto não há banco de dados.
 // Mantendo esta interface, a troca pelo Firestore fica isolada neste arquivo.
-import type { ItemOrcamento, Veiculo } from "./orcamento";
+import type { ItemOrcamento, Servico, Veiculo } from "./orcamento";
 
 export type Oficina = {
   nome: string;
@@ -24,10 +24,14 @@ export type OrcamentoSalvo = {
   descontoPct: number;
   total: number;
   status: StatusOrcamento;
+  // Cópia dos serviços da oficina usados aqui, para o orçamento continuar
+  // abrindo igual mesmo se o serviço for editado ou excluído depois.
+  servicosDaOficina?: Servico[];
 };
 
 const CHAVE_OFICINA = "orcacar:oficina";
 const CHAVE_ORCAMENTOS = "orcacar:orcamentos";
+const CHAVE_SERVICOS = "orcacar:servicos";
 
 function ler<T>(chave: string, padrao: T): T {
   try {
@@ -47,6 +51,40 @@ function gravar(chave: string, valor: unknown) {
 export const lerOficina = () => ler<Oficina | null>(CHAVE_OFICINA, null);
 export const salvarOficina = (oficina: Oficina) =>
   gravar(CHAVE_OFICINA, oficina);
+
+export const listarServicosDaOficina = () =>
+  ler<Servico[]>(CHAVE_SERVICOS, []);
+
+export function salvarServicoDaOficina(
+  dados: Pick<Servico, "nome" | "horasPadrao"> & {
+    id?: string;
+    pecas: { nome: string; preco: number }[];
+  },
+): Servico {
+  const servico: Servico = {
+    id: dados.id ?? `oficina-${crypto.randomUUID().slice(0, 8)}`,
+    nome: dados.nome,
+    categoria: "oficina",
+    horasPadrao: dados.horasPadrao,
+    fixo: true,
+    pecas: dados.pecas.map((p) => ({
+      nome: p.nome,
+      precoPadrao: p.preco,
+      precoMin: p.preco,
+      precoMax: p.preco,
+    })),
+  };
+  const outros = listarServicosDaOficina().filter((s) => s.id !== servico.id);
+  gravar(CHAVE_SERVICOS, [...outros, servico]);
+  return servico;
+}
+
+export function excluirServicoDaOficina(id: string) {
+  gravar(
+    CHAVE_SERVICOS,
+    listarServicosDaOficina().filter((s) => s.id !== id),
+  );
+}
 
 export const listarOrcamentos = () =>
   ler<OrcamentoSalvo[]>(CHAVE_ORCAMENTOS, []);

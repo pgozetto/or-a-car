@@ -11,6 +11,7 @@ import {
   type StatusOrcamento,
 } from "@/lib/armazenamento";
 import {
+  SERVICOS,
   calcularOrcamento,
   descreverVeiculo,
   formatarReais,
@@ -39,12 +40,15 @@ export default function PaginaOrcamento() {
     );
   }
 
-  const resultado = calcularOrcamento({
-    itens: orcamento.itens,
-    valorHora: orcamento.valorHora,
-    veiculo: orcamento.veiculo,
-    descontoPct: orcamento.descontoPct,
-  });
+  const resultado = calcularOrcamento(
+    {
+      itens: orcamento.itens,
+      valorHora: orcamento.valorHora,
+      veiculo: orcamento.veiculo,
+      descontoPct: orcamento.descontoPct,
+    },
+    [...(orcamento.servicosDaOficina ?? []), ...SERVICOS],
+  );
   const veiculo = descreverVeiculo(orcamento.veiculo, orcamento.modelo);
 
   function mudarStatus(status: StatusOrcamento) {
