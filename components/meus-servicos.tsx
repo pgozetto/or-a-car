@@ -32,8 +32,20 @@ export default function MeusServicos({ valorHora }: { valorHora: number }) {
   // Muda a cada edição para os campos de valor recarregarem o texto.
   const [versaoForm, setVersaoForm] = useState(0);
   const [aviso, setAviso] = useState("");
+  const [erro, setErro] = useState("");
+  const [salvando, setSalvando] = useState(false);
 
-  useEffect(() => setServicos(listarServicosDaOficina()), []);
+  async function recarregar() {
+    try {
+      setServicos(await listarServicosDaOficina());
+    } catch {
+      setErro("Não foi possível carregar seus serviços.");
+    }
+  }
+
+  useEffect(() => {
+    recarregar();
+  }, []);
 
   function limpar() {
     setEditandoId(null);
@@ -53,26 +65,37 @@ export default function MeusServicos({ valorHora }: { valorHora: number }) {
     document.getElementById("form-servico")?.scrollIntoView({ behavior: "smooth" });
   }
 
-  function excluir(s: Servico) {
+  async function excluir(s: Servico) {
     if (!window.confirm(`Excluir o serviço "${s.nome}"?`)) return;
-    excluirServicoDaOficina(s.id);
-    setServicos(listarServicosDaOficina());
-    if (editandoId === s.id) limpar();
+    try {
+      await excluirServicoDaOficina(s.id);
+      if (editandoId === s.id) limpar();
+      await recarregar();
+    } catch {
+      setErro("Não foi possível excluir. Tente de novo.");
+    }
   }
 
-  function salvar(e: FormEvent) {
+  async function salvar(e: FormEvent) {
     e.preventDefault();
-    salvarServicoDaOficina({
-      id: editandoId ?? undefined,
-      nome: nome.trim(),
-      horasPadrao: horas,
-      pecas: pecas
-        .filter((p) => p.nome.trim())
-        .map((p) => ({ nome: p.nome.trim(), preco: p.preco })),
-    });
-    setServicos(listarServicosDaOficina());
-    setAviso(editandoId ? "Serviço atualizado." : "Serviço adicionado.");
-    limpar();
+    setSalvando(true);
+    setErro("");
+    try {
+      await salvarServicoDaOficina({
+        id: editandoId ?? undefined,
+        nome: nome.trim(),
+        horasPadrao: horas,
+        pecas: pecas
+          .filter((p) => p.nome.trim())
+          .map((p) => ({ nome: p.nome.trim(), preco: p.preco })),
+      });
+      setAviso(editandoId ? "Serviço atualizado." : "Serviço adicionado.");
+      limpar();
+      await recarregar();
+    } catch {
+      setErro("Não foi possível salvar o serviço. Tente de novo.");
+    }
+    setSalvando(false);
   }
 
   const totalForm = horas * valorHora + pecas.reduce((s, p) => s + p.preco, 0);
@@ -211,8 +234,12 @@ export default function MeusServicos({ valorHora }: { valorHora: number }) {
         </p>
 
         <div className="grid gap-3 sm:grid-cols-2">
-          <button type="submit" disabled={!nome.trim()} className={estiloBotaoPrincipal}>
-            {editandoId ? "Salvar alterações" : "Adicionar serviço"}
+          <button
+            type="submit"
+            disabled={!nome.trim() || salvando}
+            className={estiloBotaoPrincipal}
+          >
+            {salvando ? "Salvando..." : editandoId ? "Salvar alterações" : "Adicionar serviço"}
           </button>
           {editandoId && (
             <button type="button" onClick={limpar} className={estiloBotaoSecundario}>
@@ -223,6 +250,11 @@ export default function MeusServicos({ valorHora }: { valorHora: number }) {
         {aviso && (
           <p role="status" className="text-center text-accent">
             {aviso}
+          </p>
+        )}
+        {erro && (
+          <p role="alert" className="rounded-xl bg-danger/10 p-3 text-sm text-danger">
+            {erro}
           </p>
         )}
       </form>

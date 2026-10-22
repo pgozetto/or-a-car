@@ -48,7 +48,7 @@ export default function Landing() {
             Sem planilha, sem conta de cabeça.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Link href="/painel" className={estiloBotaoPrincipal}>
+            <Link href="/entrar?modo=criar" className={estiloBotaoPrincipal}>
               Começar grátis
             </Link>
             <Link href="/planos" className={estiloBotaoSecundario}>
@@ -148,7 +148,7 @@ export default function Landing() {
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
             Perguntas comuns
           </h2>
-          <Link href="/painel" className={estiloBotaoPrincipal}>
+          <Link href="/entrar?modo=criar" className={estiloBotaoPrincipal}>
             Começar grátis
           </Link>
         </div>

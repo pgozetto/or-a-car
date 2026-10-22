@@ -88,7 +88,7 @@ export default function TabelaPlanos() {
               </ul>
 
               <Link
-                href={`/painel?plano=${p.id}${anual ? "&cobranca=anual" : ""}`}
+                href={p.precoMensal === 0 ? "/entrar?modo=criar" : `/painel/conta?plano=${p.id}${anual ? "&ciclo=anual" : ""}`}
                 className={p.destaque ? estiloBotaoPrincipal : estiloBotaoSecundario}
               >
                 {p.precoMensal === 0 ? "Começar grátis" : `Assinar ${p.nome}`}

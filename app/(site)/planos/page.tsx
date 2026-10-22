@@ -28,7 +28,7 @@ export default function PaginaPlanos() {
             {
               pergunta: "Como eu pago?",
               resposta:
-                "Pix ou cartão de crédito. No cartão a cobrança é automática todo mês (ou todo ano, no plano anual).",
+                "Com cartão de crédito, pelo Mercado Pago. A cobrança é automática todo mês (ou uma vez por ano, no plano anual).",
             },
             {
               pergunta: `O que acontece depois dos ${LIMITE_GRATIS} orçamentos grátis?`,
@@ -38,11 +38,11 @@ export default function PaginaPlanos() {
             {
               pergunta: "Posso trocar de plano depois?",
               resposta:
-                "Pode subir ou descer de plano a qualquer momento. A diferença é ajustada na próxima cobrança.",
+                "Pode. Em Minha conta, cancele a assinatura atual e assine o novo plano. O plano cancelado continua valendo até o fim do período já pago.",
             },
             {
-              pergunta: "Tem nota fiscal?",
-              resposta: "Sim, enviamos a nota fiscal por e-mail a cada pagamento.",
+              pergunta: "Recebo comprovante?",
+              resposta: "Sim. O Mercado Pago envia o comprovante de cada cobrança para o seu e-mail.",
             },
           ]}
         />

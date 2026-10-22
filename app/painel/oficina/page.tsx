@@ -7,10 +7,11 @@ import { VALOR_HORA_REFERENCIA } from "@/lib/orcamento";
 import { useOficina } from "@/lib/use-oficina";
 
 export default function PaginaOficina() {
-  const [oficina, setOficina] = useOficina();
+  const { oficina, recarregar, erro } = useOficina();
   const [salvo, setSalvo] = useState(false);
 
-  if (oficina === undefined) return null;
+  if (erro) return <p role="alert" className="text-danger">{erro}</p>;
+  if (oficina === undefined) return <p className="text-muted">Carregando...</p>;
 
   return (
     <>
@@ -18,8 +19,8 @@ export default function PaginaOficina() {
       <FormOficina
         inicial={oficina}
         textoBotao="Salvar"
-        aoSalvar={(o) => {
-          setOficina(o);
+        aoSalvar={() => {
+          recarregar();
           setSalvo(true);
         }}
       />
@@ -28,8 +29,12 @@ export default function PaginaOficina() {
           Dados salvos.
         </p>
       )}
-      <hr className="border-border" />
-      <MeusServicos valorHora={oficina?.valorHora ?? VALOR_HORA_REFERENCIA.padrao} />
+      {oficina && (
+        <>
+          <hr className="border-border" />
+          <MeusServicos valorHora={oficina.valorHora ?? VALOR_HORA_REFERENCIA.padrao} />
+        </>
+      )}
     </>
   );
 }

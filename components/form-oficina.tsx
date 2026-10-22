@@ -19,7 +19,7 @@ export default function FormOficina({
   textoBotao,
 }: {
   inicial?: Oficina | null;
-  aoSalvar: (oficina: Oficina) => void;
+  aoSalvar: () => void;
   textoBotao: string;
 }) {
   const [nome, setNome] = useState(inicial?.nome ?? "");
@@ -31,6 +31,8 @@ export default function FormOficina({
   );
   // Enquanto o usuário não mexe no valor da hora, ele acompanha a região.
   const [horaEditada, setHoraEditada] = useState(Boolean(inicial));
+  const [salvando, setSalvando] = useState(false);
+  const [erro, setErro] = useState("");
 
   function trocarRegiao(novaUf: string, novoLocal: Oficina["local"]) {
     setUf(novaUf);
@@ -38,11 +40,17 @@ export default function FormOficina({
     if (!horaEditada) setValorHora(valorHoraSugerido(novaUf, novoLocal));
   }
 
-  function enviar(e: FormEvent) {
+  async function enviar(e: FormEvent) {
     e.preventDefault();
-    const oficina = { nome: nome.trim(), whatsapp, uf, local, valorHora };
-    salvarOficina(oficina);
-    aoSalvar(oficina);
+    setSalvando(true);
+    setErro("");
+    try {
+      await salvarOficina({ nome: nome.trim(), whatsapp, uf, local, valorHora });
+      aoSalvar();
+    } catch {
+      setErro("Não foi possível salvar. Confira a internet e tente de novo.");
+    }
+    setSalvando(false);
   }
 
   return (
@@ -92,8 +100,17 @@ export default function FormOficina({
           Sugestão para a sua região. Pode mudar quando quiser.
         </p>
       </div>
-      <button type="submit" disabled={!nome.trim()} className={estiloBotaoPrincipal}>
-        {textoBotao}
+      {erro && (
+        <p role="alert" className="rounded-xl bg-danger/10 p-3 text-sm text-danger">
+          {erro}
+        </p>
+      )}
+      <button
+        type="submit"
+        disabled={!nome.trim() || salvando}
+        className={estiloBotaoPrincipal}
+      >
+        {salvando ? "Salvando..." : textoBotao}
       </button>
     </form>
   );

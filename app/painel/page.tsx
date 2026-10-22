@@ -5,9 +5,10 @@ import NovoOrcamento from "@/components/novo-orcamento";
 import { useOficina } from "@/lib/use-oficina";
 
 export default function Home() {
-  const [oficina, setOficina] = useOficina();
+  const { oficina, recarregar, erro } = useOficina();
 
-  if (oficina === undefined) return null;
+  if (erro) return <p role="alert" className="text-danger">{erro}</p>;
+  if (oficina === undefined) return <p className="text-muted">Carregando...</p>;
 
   if (oficina === null) {
     return (
@@ -18,7 +19,7 @@ export default function Home() {
           </h1>
           <p className="mt-2 text-muted">Leva menos de um minuto.</p>
         </section>
-        <FormOficina aoSalvar={setOficina} textoBotao="Começar a fazer orçamentos" />
+        <FormOficina aoSalvar={recarregar} textoBotao="Começar a fazer orçamentos" />
       </>
     );
   }

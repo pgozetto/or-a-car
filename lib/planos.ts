@@ -1,3 +1,5 @@
+import type { Assinatura } from "./armazenamento";
+
 export type Plano = {
   id: "gratis" | "oficina" | "pro";
   nome: string;
@@ -51,6 +53,17 @@ export const PLANOS: Plano[] = [
     ],
   },
 ];
+
+// Mesma regra de private.assinatura_ativa no banco: cancelada continua
+// valendo até o fim do período já pago.
+export function temAssinaturaAtiva(
+  a: Pick<Assinatura, "plano" | "status" | "fim">,
+  agora = new Date(),
+) {
+  if (a.plano === "gratis") return false;
+  if (a.status === "ativa") return true;
+  return a.status === "cancelada" && a.fim !== null && new Date(a.fim) > agora;
+}
 
 export function precoPorMes(plano: Plano, anual: boolean) {
   return anual

@@ -17,17 +17,19 @@ import {
   type Servico,
 } from "@/lib/orcamento";
 import {
+  LimiteGratisAtingido,
   linkWhatsApp,
   listarServicosDaOficina,
   salvarOrcamento,
-  type Oficina,
+  type OficinaCompleta,
 } from "@/lib/armazenamento";
+import { LIMITE_GRATIS, temAssinaturaAtiva } from "@/lib/planos";
 import { Campo, Etapa, Selecao, estiloBotaoPrincipal } from "./campos";
 import CampoValor from "./campo-valor";
 
 type Ajuste = Omit<ItemOrcamento, "servicoId">;
 
-export default function NovoOrcamento({ oficina }: { oficina: Oficina }) {
+export default function NovoOrcamento({ oficina }: { oficina: OficinaCompleta }) {
   const router = useRouter();
   const [tipoId, setTipoId] = useState("hatch");
   const [marcaId, setMarcaId] = useState("");
@@ -38,7 +40,17 @@ export default function NovoOrcamento({ oficina }: { oficina: Oficina }) {
   const [cliente, setCliente] = useState("");
   const [telefone, setTelefone] = useState("");
   const [servicosDaOficina, setServicosDaOficina] = useState<Servico[]>([]);
-  useEffect(() => setServicosDaOficina(listarServicosDaOficina()), []);
+  const [salvando, setSalvando] = useState(false);
+  const [erro, setErro] = useState<"limite" | "falha" | null>(null);
+
+  useEffect(() => {
+    listarServicosDaOficina()
+      .then(setServicosDaOficina)
+      .catch(() => setServicosDaOficina([]));
+  }, []);
+
+  const gratis = !temAssinaturaAtiva(oficina.assinatura);
+  const gratisRestantes = Math.max(LIMITE_GRATIS - oficina.assinatura.orcamentosCriados, 0);
 
   const todosServicos = useMemo(
     () => [...servicosDaOficina, ...SERVICOS],
@@ -95,33 +107,68 @@ export default function NovoOrcamento({ oficina }: { oficina: Oficina }) {
     }));
   }
 
-  const podeEnviar = marcaId !== "" && resultado.linhas.length > 0;
+  const semOrcamentosGratis = gratis && gratisRestantes === 0;
+  const podeEnviar =
+    marcaId !== "" && resultado.linhas.length > 0 && !salvando && !semOrcamentosGratis;
 
-  function salvarEEnviar() {
-    const salvo = salvarOrcamento({
-      cliente,
-      telefoneCliente: telefone,
-      veiculo,
-      modelo,
-      itens,
-      valorHora: oficina.valorHora,
-      descontoPct,
-      total: resultado.total,
-      servicosDaOficina: servicosDaOficina.filter((s) =>
-        selecionados.includes(s.id),
-      ),
-    });
-    const texto = textoWhatsApp(
-      oficina.nome,
-      resultado,
-      descreverVeiculo(veiculo, modelo),
-    );
-    window.open(linkWhatsApp(texto, telefone), "_blank", "noopener");
-    router.push(`/painel/orcamentos/${salvo.id}`);
+  async function salvarEEnviar() {
+    // Abre a aba já no toque: depois do await o navegador bloquearia o popup.
+    const janela = window.open("", "_blank");
+    setSalvando(true);
+    setErro(null);
+    try {
+      const salvo = await salvarOrcamento({
+        cliente,
+        telefoneCliente: telefone,
+        veiculo,
+        modelo,
+        itens,
+        valorHora: oficina.valorHora,
+        descontoPct,
+        total: resultado.total,
+        servicosDaOficina: servicosDaOficina.filter((s) =>
+          selecionados.includes(s.id),
+        ),
+      });
+      const texto = textoWhatsApp(
+        oficina.nome,
+        resultado,
+        descreverVeiculo(veiculo, modelo),
+      );
+      if (janela) {
+        janela.opener = null;
+        janela.location.href = linkWhatsApp(texto, telefone);
+      }
+      router.push(`/painel/orcamentos/${salvo.id}`);
+    } catch (e) {
+      janela?.close();
+      setErro(e instanceof LimiteGratisAtingido ? "limite" : "falha");
+      setSalvando(false);
+    }
   }
 
   return (
     <div className="flex flex-col gap-10 pb-36">
+      {gratis && (
+        <div
+          className={`flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between ${
+            semOrcamentosGratis ? "border-accent bg-accent/10" : "border-border bg-surface"
+          }`}
+        >
+          <p>
+            {semOrcamentosGratis
+              ? "Seus 3 orçamentos grátis acabaram. Assine para continuar fazendo orçamentos."
+              : `Plano grátis: ${gratisRestantes} de ${LIMITE_GRATIS} orçamentos restantes.`}
+          </p>
+          <Link
+            href="/painel/conta"
+            className={semOrcamentosGratis ? estiloBotaoPrincipal : "font-semibold text-accent"}
+          >
+            {semOrcamentosGratis ? "Ver planos" : "Assinar"}
+          </Link>
+        </div>
+      )}
+
       <Etapa numero={1} titulo="Qual é o carro?">
         <div className="flex flex-wrap gap-2" role="group" aria-label="Tipo do carro">
           {TIPOS_VEICULO.map((t) => (
@@ -270,6 +317,22 @@ export default function NovoOrcamento({ oficina }: { oficina: Oficina }) {
         </div>
       </Etapa>
 
+      {erro && (
+        <p role="alert" className="rounded-xl bg-danger/10 p-3 text-danger">
+          {erro === "limite" ? (
+            <>
+              Seus orçamentos grátis acabaram.{" "}
+              <Link href="/painel/conta" className="font-semibold underline">
+                Assine um plano
+              </Link>{" "}
+              para continuar.
+            </>
+          ) : (
+            "Não foi possível salvar o orçamento. Confira a internet e tente de novo."
+          )}
+        </p>
+      )}
+
       <div className="fixed inset-x-0 bottom-0 border-t border-border bg-background/90 backdrop-blur print:hidden">
         <div className="mx-auto flex max-w-2xl items-center justify-between gap-4 px-4 py-4">
           <div>
@@ -286,7 +349,7 @@ export default function NovoOrcamento({ oficina }: { oficina: Oficina }) {
             onClick={salvarEEnviar}
             className={estiloBotaoPrincipal}
           >
-            Enviar WhatsApp
+            {salvando ? "Salvando..." : "Enviar WhatsApp"}
           </button>
         </div>
       </div>

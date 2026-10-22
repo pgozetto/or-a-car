@@ -23,11 +23,20 @@ import { estiloBotaoPrincipal } from "@/components/campos";
 
 export default function PaginaOrcamento() {
   const { id } = useParams<{ id: string }>();
-  const [oficina] = useOficina();
+  const { oficina } = useOficina();
   const [orcamento, setOrcamento] = useState<OrcamentoSalvo | null | undefined>();
-  useEffect(() => setOrcamento(buscarOrcamento(id)), [id]);
+  const [erro, setErro] = useState("");
 
-  if (orcamento === undefined || oficina === undefined) return null;
+  useEffect(() => {
+    buscarOrcamento(id)
+      .then(setOrcamento)
+      .catch(() => setErro("Não foi possível carregar o orçamento."));
+  }, [id]);
+
+  if (erro) return <p role="alert" className="text-danger">{erro}</p>;
+  if (orcamento === undefined || oficina === undefined) {
+    return <p className="text-muted">Carregando...</p>;
+  }
 
   if (orcamento === null) {
     return (
@@ -47,13 +56,19 @@ export default function PaginaOrcamento() {
       veiculo: orcamento.veiculo,
       descontoPct: orcamento.descontoPct,
     },
-    [...(orcamento.servicosDaOficina ?? []), ...SERVICOS],
+    [...orcamento.servicosDaOficina, ...SERVICOS],
   );
   const veiculo = descreverVeiculo(orcamento.veiculo, orcamento.modelo);
 
-  function mudarStatus(status: StatusOrcamento) {
-    atualizarStatus(id, status);
+  async function mudarStatus(status: StatusOrcamento) {
+    const anterior = orcamento!.status;
     setOrcamento((o) => o && { ...o, status });
+    try {
+      await atualizarStatus(id, status);
+    } catch {
+      setOrcamento((o) => o && { ...o, status: anterior });
+      setErro("Não foi possível mudar a situação. Tente de novo.");
+    }
   }
 
   return (
@@ -64,7 +79,7 @@ export default function PaginaOrcamento() {
           <h1 className="text-2xl font-semibold tracking-tight">Orçamento</h1>
           <p className="text-sm text-muted">
             {new Date(orcamento.criadoEm).toLocaleDateString("pt-BR")} · nº{" "}
-            {orcamento.id}
+            {orcamento.codigo}
           </p>
         </header>
 

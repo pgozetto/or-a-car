@@ -8,9 +8,22 @@ import { ROTULO_STATUS } from "@/components/status";
 
 export default function PaginaOrcamentos() {
   const [orcamentos, setOrcamentos] = useState<OrcamentoSalvo[] | null>(null);
-  useEffect(() => setOrcamentos(listarOrcamentos()), []);
+  const [erro, setErro] = useState(false);
 
-  if (orcamentos === null) return null;
+  useEffect(() => {
+    listarOrcamentos()
+      .then(setOrcamentos)
+      .catch(() => setErro(true));
+  }, []);
+
+  if (erro) {
+    return (
+      <p role="alert" className="text-danger">
+        Não foi possível carregar os orçamentos. Confira a internet e recarregue a página.
+      </p>
+    );
+  }
+  if (orcamentos === null) return <p className="text-muted">Carregando...</p>;
 
   return (
     <>
